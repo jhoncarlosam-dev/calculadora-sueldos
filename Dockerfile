@@ -1,12 +1,22 @@
-# Etapa 1: Construcción
-FROM maven:3.8.6-openjdk-11 AS build
+FROM eclipse-temurin:17-jdk
+
 WORKDIR /app
+
+# Copiar solo pom.xml primero para aprovechar la caché de Docker
+COPY pom.xml .
+
+# Descargar dependencias antes de copiar el código fuente
+RUN mvn dependency:go-offline
+
+# Ahora copia todo el código fuente
 COPY . .
+
+# Construir el JAR sin ejecutar pruebas
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Ejecución
-FROM openjdk:11
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+# Mover el JAR generado
+RUN mv target/*.jar app.jar
+
 EXPOSE 8080
+
 CMD ["java", "-jar", "app.jar"]
