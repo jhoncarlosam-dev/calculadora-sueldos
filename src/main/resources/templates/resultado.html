@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Resultado</title>
+</head>
+<body>
+<h2>Resultado del Cálculo</h2>
+<p>Días trabajados: <span th:text="${sueldo.diasTrabajados}"></span></p>
+<p>Valor por día: <span th:text="${sueldo.valorDia}"></span></p>
+<p>Total: <span th:text="${sueldo.calcularTotal()}"></span></p>
+<a href="/">Calcular otro sueldo</a>
+</body>
+</html>
